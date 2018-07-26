@@ -1,0 +1,297 @@
+\documentclass{article}
+
+%%%%
+% babel
+% PLOTS mapas y conglomerados
+% bibliografia
+%%%%
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{authblk}
+\usepackage{adjustbox}
+
+\usepackage{natbib} %para mejorar la bibliografía
+
+%\usepackage[spanish]{babel} %para mejorar el español
+%\renewcommand\spanishtablename{Tabla}
+
+
+\title{LOS INDICES DEL MUNDO}
+% autores
+\renewcommand\Authand{, y }
+\author[1]{\normalsize Estrella DelCurso}
+\author[2]{\normalsize Prossimo Deal Lado}
+
+\affil[1,2]{\small  Escuela de IngenierÃ�a,Universidad de la vida\\
+\texttt{{delcurso,deallado}@vida.edu}}
+\affil[1]{\small Instituto de altas investigaciones financieras\\
+Banco del Parque\\
+\texttt{delcurso@bp.com}}
+
+\date{}
+
+%%%%
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\maketitle
+
+
+\begin{abstract}
+Este es mi primer trabajo en exploracion y modelamiento de indices usando LATEX. Este trabajo lo he hecho bajo la filosofÃ�a de trabajo replicable. Este es mi primer trabajo en exploracion y modelamiento de indices usando LATEX. Este trabajo lo he hecho bajo la filosofÃ�a de trabajo replicable. Este es mi primer trabajo en exploracion y modelamiento de indices usando LATEX. Este trabajo lo he hecho bajo la filosofÃ�a de trabajo replicable. Este es mi primer trabajo en exploracion y modelamiento de indices usando LATEX. Este trabajo lo he hecho bajo la filosofÃ�a de trabajo replicable.
+\end{abstract}
+
+\section*{IntroducciÃ³n}
+
+Aqui les presento mi investigacion sobre diversos indices sociales en el mundo. Los indices los conseguÃ� de wikipedia, espero que les gusten mucho. Aqui les presento mi investigacion sobre diversos indices sociales en el mundo. Los indices los conseguÃ� de wikipedia, espero que les gusten mucho.Aqui les presento mi investigacion sobre diversos indices sociales en el mundo. Los indices los conseguÃ� de wikipedia, espero que les gusten mucho.Aqui les presento mi investigacion sobre diversos indices sociales en el mundo. Los indices los conseguÃ� de wikipedia, espero que les gusten mucho.
+Aqui les presento mi investigacion sobre diversos indices sociales en el mundo. Los indices los conseguÃ� de wikipedia, espero que les gusten mucho.Aqui les presento mi investigacion sobre diversos indices sociales en el mundo. Los indices los conseguÃ� de wikipedia, espero que les gusten mucho.Aqui les presento mi investigacion sobre diversos indices sociales en el mundo. Los indices los conseguÃ� de wikipedia, espero que les gusten mucho.
+
+Comencemos viendo que hay en la secciÃ³n \ref{univariada} en la pÃ¡gina \pageref{univariada}.
+
+\clearpage
+
+
+
+\section{ExploraciÃ³n Univariada}\label{univariada}
+
+En esta secciÃ³n exploro cada Ã�ndice. En esta secciÃ³n exploro cada Ã�ndice. En esta secciÃ³n exploro cada Ã�ndice. En esta secciÃ³n exploro cada Ã�ndice. En esta secciÃ³n exploro cada Ã�ndice. En esta secciÃ³n exploro cada Ã�ndice. En esta secciÃ³n exploro cada Ã�ndice. En esta secciÃ³n exploro cada Ã�ndice. En esta secciÃ³n exploro cada Ã�ndice.
+
+
+
+<<getData, echo=FALSE>>=
+# carga de datos
+filename="indexes.csv"
+dataidx=read.csv(filename, stringsAsFactors = FALSE)
+
+# previsiÃ³n:
+level5=c("muy malo","malo","medio","bueno","muy bueno")
+level4=c("muy malo","malo","bueno","muy bueno")
+level3=c("muy malo","medio","muy bueno")
+
+@
+
+
+Para conocer el comportamiento de las variables se ha preparado la Tabla \ref{Tfrecuencias}, donde se describe la distribuciÃ³n de las modalidades de cada variable. Los nÃºmeros representan la situaciÃ³n de algun paÃ�s en ese indicador, donde el mayor valor numÃ©rico es la mejor situaciÃ³n.
+
+<<results=tex,echo=FALSE>>=
+library(reporttools)
+library(xtable)
+
+titulo <- "Tablas de Frecuencia de la variables en estudio"
+tableNominal(vars = dataidx[, c(2:5)], 
+             cap = titulo, vertical = FALSE, 
+             lab ="Tfrecuencias",
+             caption.placement = "top",
+             font.size = "normalsize",
+             add.to.row = list(pos = list(0),
+                               command = "\\hline"))
+@
+
+
+Como apreciamos en la Tabla \ref{Tfrecuencias}, los paÃ�ses en la mejor situaciÃ³n son los menos, salvo en el caso del \emph{Ã�ndice de libertas mundial}\footnote{NÃ³tese que esto se puede deber a la {\bf menor} cantidad de categorÃ�as.}
+
+\clearpage
+
+Para resaltar lo anterior, tenemos la Figura \ref{barplots} en la pÃ¡gina \pageref{barplots}. 
+
+
+%%%%% figure
+\begin{figure}[h]
+\centering
+<<barplots, echo=FALSE,fig=TRUE>>=
+par(mfrow=c(2,2))
+
+demoTable=table(dataidx[,5])
+names(demoTable)=level4
+demoTableRel=round(prop.table(demoTable)*100,1)
+title='Democracia'
+paleta='red'
+demoTableRelPlot=barplot(demoTableRel,main=title,
+                         col=paleta,ylim = c(0,100),
+                         ylab = "%")
+###
+ecoTable=table(dataidx[,3])
+names(ecoTable)=level5
+ecoTableRel=round(prop.table(ecoTable)*100,1)
+title='Libertad EconÃ³mica'
+paleta='red'
+barplot(ecoTableRel,main=title,
+        col=paleta,ylim = c(0,100),
+        ylab = "%")
+
+#####
+worldTable=table(dataidx[,2])
+names(worldTable)=level3
+worldTableRel=round(prop.table(worldTable)*100,1)
+title='Libertad en el Mundo'
+paleta='red'
+barplot(worldTableRel,main=title,
+        col=paleta,ylim = c(0,100),
+        ylab = "%")
+####
+pressTable=table(dataidx[,4])
+names(pressTable)=level5
+pressTableRel=round(prop.table(pressTable)*100,1)
+title='Libertad de Prensa'
+paleta='red'
+barplot(pressTableRel,main=title,
+        col=paleta,ylim = c(0,100),
+        ylab = "%",las=2)
+@
+\caption{DistribuciÃ³n de Indicadores}
+\label{barplots}
+\end{figure}
+
+AdemÃ¡s de la distribuciÃ³n de los variable, es importante saber el valor central. Como los valores son de naturaleza ordinal debemos pedir la {\bf mediana} y otras medidas de posiciÃ³n (como los \emph{cuartiles}, los que no pediremos pues son pocos valores). La mediana de cada variable la mostramos en la Tabla \ref{stats} en la pÃ¡gina \pageref{stats}.
+
+<<summary, results=tex, echo=FALSE>>=
+library(stargazer)
+vars1 <- dataidx[, c(2:5)]
+
+stargazer(vars1,title = "Medidas estadÃ�sticas", label = "stats",summary.stat = c("n", "median"))
+@
+
+
+\section{ExploraciÃ³n Bivariada}
+
+En este trabajo estamos interesados en el impacto de los otros indices en el nivel de Democracia. Veamos las relaciones bivariadas que tiene esta variable con todas las demÃ¡s:
+
+<<corrDem, results=tex, echo=FALSE>>=
+explanans=names(dataidx)[c(2:4)]
+corrDem=cor(dataidx[,5],dataidx[,explanans],
+            use = "na.or.complete")
+stargazer(corrDem, title="CorrelaciÃ³n de Democracia con las demÃ¡s variables",label = "corrDem")
+@
+
+
+Veamos la correlaciÃ³n entre las variables independientes:
+
+
+<<corrTableX, results=tex, echo=FALSE>>=
+corrTableX=round(cor(dataidx[explanans],
+               use = "na.or.complete"),2)
+corrTableX_copy=corrTableX
+# Hide upper triangle
+
+corrTableX[upper.tri(corrTableX)]<-""
+
+stargazer(corrTableX, title="CorrelaciÃ³n entre variables independientes",label = 'corrTableX')
+@
+
+Lo visto en la Tabla \ref{corrTableX} se refuerza claramente en la Figura \ref{corrPlotX}.
+
+\begin{figure}[h]
+\centering
+\begin{adjustbox}{width=7cm,height=7cm,clip,trim=1.5cm 0.5cm 0cm 1.5cm}
+<<corrPlotX, echo=FALSE,fig=TRUE>>=
+library(corrplot)
+corrplot(corrTableX_copy, type = "lower", diag = F,
+         addCoef.col = "black")
+@
+\end{adjustbox}
+\caption{correlaciÃ³n entre predictores}
+\label{corrPlotX}
+\end{figure}
+
+
+\clearpage
+
+\section{Modelos de RegresiÃ³n}
+
+Finalmente, vemos los modelos propuestos. Primero sin la libertad mundial como independiente, y luego con estÃ¡. Los resultados se muestran en la Tabla \ref{regresiones} de la pÃ¡gina \pageref{regresiones}.
+
+<<regresiones, echo=FALSE>>=
+LinRegA = lm(Democracy ~ ., data = dataidx[,c(3:5)])
+LinRegB = lm(Democracy ~ ., data = dataidx[,c(2:5)])
+@
+
+
+<<regresionesPlot,results=tex, echo=false>>=
+stargazer(LinRegA,LinRegB,
+          title = "Modelos de RegresiÃ³n", 
+          label = "regresiones")
+@
+
+Como se viÃ³ en la Tabla \ref{regresiones}, cuando estÃ¡ presente el \emph{indice de libertad mundial}, el \emph{Ã�ndice de libertad de prensa} pierde significancia.
+
+\clearpage
+
+\section{ExploraciÃ³n Espacial}
+
+Como acabamos de ver en la Tabla \ref{regresiones} en la pÃ¡gina \pageref{regresiones}, si quisieras sintetizar la multidimensionalidad de nuestros indicadores, podrÃ�amos usar tres de las cuatro variables que tenemos (un par de las originales tiene demasiada correlaciÃ³n). 
+
+AsÃ�, propongo que calculemos conglomerados de paÃ�ses usando toda la informaciÃ³n de tres de los indicadores. Como nuestras variables son ordinales utilizaremos un proceso de conglomeraciÃ³n donde las distancia serÃ¡n calculadas usando la medida {\bf gower}
+propuesta por 
+\cite{gower_general_1971}
+, y para los enlazamientos usaremos la tÃ©cnica de {\bf medoides} 
+siguiendo a \cite{reynolds_clustering_2006}
+. Los tres conglomerados se muestran en la Figura \ref{clustmap}.
+
+<<getMap, echo=FALSE,results=hide>>=
+library(rgdal)
+folder='world_map'
+file='world_map.shp'
+mapaFile=file.path(folder,file)
+mapaMundo = rgdal::readOGR(mapaFile,stringsAsFactors=F) 
+mapaMundoAll=merge(mapaMundo,dataidx, by.x='NAME', by.y='Country',all.x=F)
+@
+
+
+<<echo=FALSE>>=
+# nombres de las variables a utilizar
+dimensions=c("EconomicFreedom","PressFreedom","Democracy")
+#creando subconjunto
+dataCluster=mapaMundoAll@data[,c(dimensions)]
+# indicando que la data numerica es ordinal:
+dataCluster=as.data.frame(lapply(dataCluster,as.ordered))
+# llamando librerÃ�a:
+library(cluster)
+# creando matriz de distancias
+dist=daisy(dataCluster,metric = "gower")
+# aplicando algoritmo
+pam_fit <- pam(dist, diss = TRUE, k = 3)
+# aÃ±adiendo los clusters al mapa:
+mapaMundoAll$cluster=pam_fit$clustering
+# check:
+# aggregate(Democracy~cluster, data=mapaMundoAll,FUN=mean,na.rm=T)
+#recodificando
+library(car)
+mapaMundoAll$cluster<-recode(mapaMundoAll$cluster,
+                             "1=2;2=3;3=1")
+@
+
+
+
+\begin{figure}[h]
+\centering
+\begin{adjustbox}{width=11cm,height=8cm,clip,trim=1cm 2.5cm 0cm 2.5cm}
+<<plotMap1, echo=FALSE, fig=TRUE>>=
+# que se pintara:
+varToPlot=mapaMundoAll$cluster
+
+#cuantos colores:
+numberOfColors = length(unique(varToPlot)) 
+
+#quÃ© colores:
+library(RColorBrewer)
+colorForScale='Set2'
+paleta = brewer.pal(numberOfColors, colorForScale)
+
+# a dibujar:
+plot(mapaMundo,col='grey',border=0)
+plot(mapaMundoAll, col = paleta[varToPlot],border=F,add=T)
+legend('left', legend = c("TOP","MEDIUM","LOW"), 
+       fill = paleta,
+       cex = 0.6, 
+       bty = "n",
+       title="Conglomerado")
+@
+\end{adjustbox}
+\caption{Paises conglomerados segun sus indicadores sociopolÃ�ticos}\label{clustmap}
+\end{figure}
+
+\bibliographystyle{apalike} %formato de estilo para la bibliografia- en APA es "apalike"
+\renewcommand{\refname}{Bibliografia} %con renewcommand modificas el nombres predeterminado por ejemplo "Referencias" por "Bibliografía"
+\bibliography{Repro}
+
+\end{document}
